@@ -82,7 +82,6 @@ Glassmorphism UI
 # 📂 Project Structure
 
 ```bash
-📦 Green-Valley
  ┣ 📜 index.html
  ┗ 📜 README.md
 ```
