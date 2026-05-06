@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Valley | High UI/UX School</title>
+    
+    <!-- Using Inter font for a professional, sleek agency look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === Reset & Global Variables === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --bg-color: #050505;
+            --text-main: #E1E0CC;
+            --text-muted: rgba(225, 224, 204, 0.6);
+            --accent: #ffffff;
+            --card-bg: #111111;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* === Typography & Animations === */
+        .pull-up-word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .in-view .pull-up-word {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === Hero Section === */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 0 0 2rem 2rem;
+        }
+
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .hero-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 50%, var(--bg-color) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* === Floating Navbar === */
+        nav {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            background-color: black;
+            padding: 0.75rem 2rem;
+            border-radius: 0 0 1.5rem 1.5rem;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-main);
+        }
+
+        /* === Hero Content === */
+        .hero-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 4vw;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: flex-end;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 7fr 3fr;
+                padding-bottom: 3rem;
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(4rem, 15vw, 15rem);
+            font-weight: 500;
+            line-height: 0.85;
+            letter-spacing: -0.05em;
+            color: var(--text-main);
+        }
+
+        .hero-title sup {
+            font-size: 0.3em;
+            vertical-align: top;
+            position: relative;
+            top: 0.5em;
+        }
+
+        .hero-desc {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hero-desc p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* === Modern Button === */
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: var(--text-main);
+            color: black;
+            padding: 0.4rem 0.4rem 0.4rem 1.5rem;
+            border-radius: 99px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .action-btn:hover {
+            gap: 1.25rem;
+            background-color: white;
+        }
+
+        .icon-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            color: var(--text-main);
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .action-btn:hover .icon-circle {
+            transform: scale(1.1);
+        }
+
+        /* === Content Sections General === */
+        section:not(.hero):not(#about) {
+            padding: 8rem 4vw;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
+        }
+
+        /* === NEW: Enhanced About Section (Parallax + Glassmorphism) === */
+        #about {
+            position: relative;
+            /* Cinematic architectural photo from Unsplash */
+            background: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            background-attachment: fixed; /* Creates the smooth parallax transition effect */
+            padding: 12rem 4vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Gradient overlays to blend the image seamlessly into the black background */
+        #about::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, var(--bg-color) 0%, rgba(5,5,5,0.4) 50%, var(--bg-color) 100%);
+            z-index: 1;
+        }
+
+        /* Frosted Glass Container */
+        .about-glass-card {
+            position: relative;
+            z-index: 2;
+            background: rgba(10, 10, 10, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(225, 224, 204, 0.1);
+            border-radius: 2rem;
+            padding: 4rem;
+            max-width: 1000px;
+            width: 100%;
+            /* Smooth reveal animation for the card itself */
+            transform: translateY(60px);
+            opacity: 0;
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
+        }
+
+        .in-view .about-glass-card {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .about-glass-card .section-header {
+            border-bottom: none;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(225, 224, 204, 0.85); /* Slightly brighter text for the glass card */
+        }
+
+        @media (min-width: 768px) {
+            .about-grid { grid-template-columns: 1fr 1fr; }
+            .about-glass-card { padding: 5rem; }
+        }
+
+        /* === Courses Section === */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background-color: var(--card-bg);
+            padding: 3rem 2rem;
+            border-radius: 1rem;
+            transition: transform 0.4s ease, background-color 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            background-color: #1a1a1a;
+        }
+
+        .course-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .course-card p {
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* === Contact Section === */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .contact-wrapper { grid-template-columns: 1fr 1fr; }
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        input, textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 1rem 0;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-bottom-color: var(--text-main);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <video autoPlay loop muted playsInline class="hero-video" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4"></video>
+        <div class="hero-gradient"></div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#courses">Courses</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="hero-content">
+            <h1 class="hero-title animate-on-scroll">
+                <span class="stagger-text">Green Valley</span><sup>*</sup>
+            </h1>
+            
+            <div class="hero-desc animate-on-scroll">
+                <p class="pull-up-word" style="transition-delay: 0.4s;">
+                    A worldwide network of educators, students, and visionaries bound not by labels, but by a hunger to unlock human potential through unique perspectives.
+                </p>
+                <div class="pull-up-word" style="transition-delay: 0.5s;">
+                    <button class="action-btn" onclick="showWelcomeMessage()">
+                        Join the legacy
+                        <span class="icon-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Enhanced About Section -->
+    <section id="about" class="animate-on-scroll">
+        <div class="about-glass-card">
+            <h2 class="section-header stagger-text">Our Story</h2>
+            <div class="about-grid">
+                <p class="pull-up-word" style="transition-delay: 0.3s;">Founded with the vision to disrupt traditional education, Green Valley is more than a school. It is an incubator for the next generation of visual artists, scientists, and storytellers.</p>
+                <p class="pull-up-word" style="transition-delay: 0.4s;">We provide a cinematic, immersive environment where students are encouraged to explore their passions, think critically, and become responsible global leaders.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="animate-on-scroll">
+        <h2 class="section-header stagger-text">Programs</h2>
+        <div class="courses-grid">
+            <div class="course-card pull-up-word" style="transition-delay: 0.2s;">
+                <h3>Digital Arts & Cinema</h3>
+                <p>Master the art of storytelling through lenses. Dive deep into cinematography, editing, and visual effects.</p>
+            </div>
+            <div class="course-card pull-up-word" style="transition-delay: 0.3s;">
+                <h3>Tech Innovation Lab</h3>
+                <p>Explore cutting-edge computer science, artificial intelligence, and software engineering in our state-of-the-art labs.</p>
+            </div>
+            <div class="course-card pull-up-word" style="transition-delay: 0.4s;">
+                <h3>Global Business</h3>
+                <p>Learn modern entrepreneurship, global market economics, and startup leadership from industry experts.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="animate-on-scroll">
+        <h2 class="section-header stagger-text">Inquiries</h2>
+        <div class="contact-wrapper">
+            <div class="contact-info">
+                <p class="pull-up-word" style="transition-delay: 0.2s; font-size: 1.5rem; margin-bottom: 2rem;">Ready to unlock your potential?<br>Reach out to our admissions collective.</p>
+            </div>
+            
+            <form id="contactForm" onsubmit="validateForm(event)" class="pull-up-word" style="transition-delay: 0.4s;">
+                <div class="input-group">
+                    <input type="text" id="name" placeholder="Your Name" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <input type="email" id="email" placeholder="Your Email Address" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <textarea id="message" placeholder="Tell us your story..."></textarea>
+                </div>
+                <button type="submit" class="action-btn" style="background-color: transparent; border: 1px solid var(--text-main); color: var(--text-main);">
+                    Send Transmission
+                    <span class="icon-circle" style="background-color: var(--text-main); color: black;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Green Valley High School Collective. All rights reserved.</p>
+    </footer>
+
+    <!-- Internal JavaScript -->
+    <script>
+        // --- 1. Animation Logic ---
+        document.querySelectorAll('.stagger-text').forEach(el => {
+            const words = el.innerText.split(' ');
+            el.innerHTML = '';
+            words.forEach((word, index) => {
+                const span = document.createElement('span');
+                span.className = 'pull-up-word';
+                span.style.transitionDelay = `${index * 0.1}s`;
+                span.style.marginRight = '0.25em';
+                span.innerText = word;
+                el.appendChild(span);
+            });
+        });
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // For the about section specifically, trigger the card animation alongside child animations
+                    if(entry.target.id === 'about') {
+                        entry.target.classList.add('in-view');
+                    } else {
+                        entry.target.classList.add('in-view');
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(section => {
+            observer.observe(section);
+        });
+        
+        setTimeout(() => {
+            document.querySelector('.hero .hero-content').classList.add('in-view');
+        }, 100);
+
+        // --- 2. Interactive Feature ---
+        function showWelcomeMessage() {
+            alert("✨ Welcome to the Green Valley Collective. Your journey to mastery begins here. ✨");
+        }
+
+        // --- 3. Form Validation ---
+        function validateForm(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!name || !email || !message) {
+                alert("Please fill in all fields before sending your transmission.");
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please provide a valid email address.");
+                return;
+            }
+
+            alert(`Transmission received. Thank you, ${name}. Our collective will be in touch shortly.`);
+            document.getElementById('contactForm').reset();
+        }
+    </script>
+</body>
+</html>
