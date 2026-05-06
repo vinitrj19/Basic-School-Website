@@ -6,7 +6,7 @@
     <title>Open Minds a Birla School | Patna</title>
     
     <!-- Using Inter font for a professional, sleek agency look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* === Reset & Global Variables === */
@@ -155,6 +155,7 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
 
         .hero-desc {
@@ -184,6 +185,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             width: fit-content;
+            position: relative;
+            z-index: 5;
         }
 
         .action-btn:hover {
@@ -261,8 +264,71 @@
             margin-bottom: 2rem;
         }
 
+        /* === NEW: Perspective Marquee Component === */
+        .perspective-marquee-wrapper {
+            position: relative;
+            background: var(--bg-color);
+            padding: 6rem 0;
+            overflow: hidden;
+            perspective: 1200px; /* 3D Perspective */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Fading Edges */
+        .perspective-marquee-wrapper::before,
+        .perspective-marquee-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 25%;
+            z-index: 5;
+            pointer-events: none;
+        }
+        .perspective-marquee-wrapper::before {
+            left: 0;
+            background: linear-gradient(90deg, var(--bg-color) 0%, transparent 100%);
+        }
+        .perspective-marquee-wrapper::after {
+            right: 0;
+            background: linear-gradient(270deg, var(--bg-color) 0%, transparent 100%);
+        }
+
+        /* 3D Rotated Container */
+        .perspective-marquee-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            transform: rotateX(8deg) rotateY(-28deg);
+            transform-style: preserve-3d;
+        }
+
+        /* Scrolling Track */
+        .perspective-marquee-track {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee-scroll 25s linear infinite;
+        }
+
+        .perspective-marquee-track span {
+            display: inline-block;
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.03em;
+            padding-right: 4rem;
+            opacity: 0.9;
+        }
+
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Scrolls half the track (which is duplicated) */
+        }
+
         /* === Content Sections General === */
-        section:not(.hero):not(#about) {
+        section:not(.hero):not(#about):not(.perspective-marquee-wrapper) {
             padding: 8rem 4vw;
             max-width: 1400px;
             margin: 0 auto;
@@ -277,7 +343,7 @@
             padding-bottom: 1rem;
         }
 
-        /* === About Section (Parallax + Glassmorphism) === */
+        /* === About Section === */
         #about {
             position: relative;
             background: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
@@ -353,24 +419,110 @@
             color: var(--text-muted);
         }
 
-        /* === Courses Section === */
+        /* === Courses Section with Parallax Background === */
+        #courses {
+            position: relative;
+            /* Moody library/architecture background */
+            background: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            background-attachment: fixed;
+            max-width: 100%; 
+        }
+        
+        #courses::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, var(--bg-color) 0%, rgba(8,8,8,0.85) 50%, var(--bg-color) 100%);
+            z-index: 1;
+        }
+
+        #courses .section-header, 
+        #courses .courses-grid {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         .courses-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
+        /* === Advanced Course Cards with Image Backgrounds === */
         .course-card {
-            background-color: var(--card-bg);
             padding: 3rem 2rem;
             border-radius: 1rem;
-            transition: transform 0.4s ease, background-color 0.4s ease;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-size: cover;
+            background-position: center;
         }
 
+        /* Base dark overlay so text is readable */
+        .course-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 15, 15, 0.75); /* Dark enough for text */
+            transition: background 0.5s ease;
+            z-index: 1;
+        }
+
+        /* Unique Images & Colored Tints via CSS Classes */
+        .course-card.science { background-image: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80'); border-top: 1px solid rgba(50, 150, 255, 0.4); }
+        .course-card.commerce { background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'); border-top: 1px solid rgba(255, 200, 50, 0.4); }
+        .course-card.humanities { background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead27d8?auto=format&fit=crop&w=800&q=80'); border-top: 1px solid rgba(200, 100, 255, 0.4); }
+        .course-card.secondary { background-image: url('https://images.unsplash.com/photo-1427504494785-319ce8368625?auto=format&fit=crop&w=800&q=80'); border-top: 1px solid rgba(100, 255, 150, 0.4); }
+        .course-card.arts { background-image: url('https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=800&q=80'); border-top: 1px solid rgba(255, 100, 100, 0.4); }
+        .course-card.tech { background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'); border-top: 1px solid rgba(50, 200, 255, 0.4); }
+
+        /* Hover animations and glowing shadows */
         .course-card:hover {
-            transform: translateY(-10px);
-            background-color: #1a1a1a;
+            transform: translateY(-12px) scale(1.02);
+            z-index: 3;
+        }
+
+        /* Lighten the overlay on hover so the background image pops */
+        .course-card:hover::before {
+            background: rgba(15, 15, 15, 0.35);
+        }
+
+        /* Add colored drop shadows depending on the card type */
+        .course-card:hover.science { border-color: rgba(50, 150, 255, 0.6); box-shadow: 0 15px 40px rgba(10, 30, 55, 0.9); }
+        .course-card:hover.commerce { border-color: rgba(255, 200, 50, 0.6); box-shadow: 0 15px 40px rgba(50, 40, 10, 0.9); }
+        .course-card:hover.humanities { border-color: rgba(200, 100, 255, 0.6); box-shadow: 0 15px 40px rgba(40, 15, 45, 0.9); }
+        .course-card:hover.secondary { border-color: rgba(100, 255, 150, 0.6); box-shadow: 0 15px 40px rgba(15, 45, 25, 0.9); }
+        .course-card:hover.arts { border-color: rgba(255, 100, 100, 0.6); box-shadow: 0 15px 40px rgba(55, 15, 20, 0.9); }
+        .course-card:hover.tech { border-color: rgba(50, 200, 255, 0.6); box-shadow: 0 15px 40px rgba(10, 45, 55, 0.9); }
+
+        /* Light sweep/shine effect on hover */
+        .course-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.7s ease;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .course-card:hover::after {
+            left: 100%;
+        }
+
+        /* Ensure Text is above background overlays */
+        .course-card > * {
+            position: relative;
+            z-index: 3;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8); /* Ensures text readability over images */
         }
 
         .course-tag {
@@ -378,26 +530,53 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--text-muted);
-            border: 1px solid var(--text-muted);
-            padding: 0.25rem 0.75rem;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(0,0,0,0.4);
+            padding: 0.35rem 0.85rem;
             border-radius: 99px;
             margin-bottom: 1.5rem;
+            width: fit-content;
         }
 
         .course-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: var(--text-main);
+            color: #ffffff;
         }
 
         .course-card p {
-            color: var(--text-muted);
+            color: rgba(255,255,255,0.85);
             line-height: 1.5;
             font-size: 0.95rem;
         }
 
-        /* === Contact Section === */
+        /* === Contact Section with Enhanced Visibility === */
+        #contact {
+            position: relative;
+            background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            background-attachment: fixed;
+            max-width: 100%;
+        }
+
+        #contact::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            /* Lighter gradient overlay so the background image is much more visible */
+            background: linear-gradient(to bottom, var(--bg-color) 0%, rgba(5,5,5,0.4) 50%, var(--bg-color) 100%);
+            z-index: 1;
+        }
+
+        #contact .section-header,
+        #contact .contact-wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         .contact-wrapper {
             display: grid;
             grid-template-columns: 1fr;
@@ -429,18 +608,22 @@
         }
 
         .info-item span {
-            color: var(--text-muted);
+            color: var(--text-main);
             font-size: 1rem;
         }
 
+        /* Glassmorphism Form */
         form {
             display: flex;
             flex-direction: column;
             gap: 2rem;
-            background: var(--card-bg);
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             padding: 3rem;
             border-radius: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
         .input-group {
@@ -453,7 +636,7 @@
             width: 100%;
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.3);
             padding: 1rem 0;
             color: var(--text-main);
             font-size: 1.1rem;
@@ -570,6 +753,28 @@
         </div>
     </section>
 
+    <!-- NEW: Perspective Marquee Feature (HTML/CSS Replication of React Component) -->
+    <section class="perspective-marquee-wrapper">
+        <div class="perspective-marquee-container">
+            <div class="perspective-marquee-track">
+                <!-- Content duplicated for infinite seamless scrolling -->
+                <span>CBSE Affiliated</span>
+                <span>Holistic Education</span>
+                <span>Innovation & Tech</span>
+                <span>Global Leaders</span>
+                <span>Critical Thinking</span>
+                <span>Academic Excellence</span>
+                
+                <span>CBSE Affiliated</span>
+                <span>Holistic Education</span>
+                <span>Innovation & Tech</span>
+                <span>Global Leaders</span>
+                <span>Critical Thinking</span>
+                <span>Academic Excellence</span>
+            </div>
+        </div>
+    </section>
+
     <!-- About Section -->
     <section id="about" class="animate-on-scroll">
         <div class="about-glass-card">
@@ -605,37 +810,37 @@
         <h2 class="section-header stagger-text">Academic Programs</h2>
         <div class="courses-grid">
             
-            <div class="course-card pull-up-word" style="transition-delay: 0.1s;">
+            <div class="course-card science pull-up-word" style="transition-delay: 0.1s;">
                 <span class="course-tag">Senior Secondary</span>
                 <h3>Science Stream</h3>
                 <p>Physics, Chemistry, Biology & Mathematics — preparing students for medical, engineering and research careers with rigorous lab-based learning.</p>
             </div>
             
-            <div class="course-card pull-up-word" style="transition-delay: 0.2s;">
+            <div class="course-card commerce pull-up-word" style="transition-delay: 0.2s;">
                 <span class="course-tag">Senior Secondary</span>
                 <h3>Commerce Stream</h3>
                 <p>Accountancy, Business Studies, Economics and Mathematics — building future entrepreneurs, chartered accountants and financial analysts.</p>
             </div>
             
-            <div class="course-card pull-up-word" style="transition-delay: 0.3s;">
+            <div class="course-card humanities pull-up-word" style="transition-delay: 0.3s;">
                 <span class="course-tag">Senior Secondary</span>
                 <h3>Humanities Stream</h3>
                 <p>History, Political Science, Geography, Psychology and Sociology — nurturing critical thinkers, writers, civil servants and social leaders.</p>
             </div>
 
-            <div class="course-card pull-up-word" style="transition-delay: 0.4s;">
+            <div class="course-card secondary pull-up-word" style="transition-delay: 0.4s;">
                 <span class="course-tag">Secondary</span>
                 <h3>Secondary Education</h3>
                 <p>Core curriculum covering Language, Mathematics, Science and Social Science for Classes VI–X, aligned with CBSE guidelines for holistic development.</p>
             </div>
 
-            <div class="course-card pull-up-word" style="transition-delay: 0.5s;">
+            <div class="course-card arts pull-up-word" style="transition-delay: 0.5s;">
                 <span class="course-tag">Co-Curricular</span>
                 <h3>Arts & Activities</h3>
                 <p>Music, Dance, Fine Arts, Drama and Sports — cultivating creativity, physical fitness and teamwork to round every student's education.</p>
             </div>
 
-            <div class="course-card pull-up-word" style="transition-delay: 0.6s;">
+            <div class="course-card tech pull-up-word" style="transition-delay: 0.6s;">
                 <span class="course-tag">Technology</span>
                 <h3>Computer Science</h3>
                 <p>Programming, IT Applications and Digital Literacy — equipping students with 21st-century skills for a technology-driven future world.</p>
@@ -650,10 +855,10 @@
         <div class="contact-wrapper">
             
             <div class="contact-info pull-up-word" style="transition-delay: 0.2s;">
-                <p style="font-size: 1.5rem; margin-bottom: 1rem;">Ready to unlock your potential?</p>
-                <p style="color: var(--text-muted);">Reach out to our admissions collective. We are here to guide you through the process.</p>
+                <p style="font-size: 1.5rem; margin-bottom: 1rem; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">Ready to unlock your potential?</p>
+                <p style="color: rgba(255,255,255,0.8); text-shadow: 0 2px 10px rgba(0,0,0,0.8);">Reach out to our admissions collective. We are here to guide you through the process.</p>
                 
-                <div class="contact-info-list">
+                <div class="contact-info-list" style="text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
                     <div class="info-item">
                         <strong>Address</strong>
                         <span>Open Minds a Birla School, Patna, Bihar, India</span>
@@ -765,13 +970,13 @@
         function showWelcomeMessage() {
             document.getElementById('modalOverlay').classList.add('show');
             document.getElementById('welcomeModal').classList.add('show');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeWelcomeMessage() {
             document.getElementById('modalOverlay').classList.remove('show');
             document.getElementById('welcomeModal').classList.remove('show');
-            document.body.style.overflow = 'auto'; // Restore scrolling
+            document.body.style.overflow = 'auto'; 
         }
 
         // --- 3. Advanced Form Validation ---
