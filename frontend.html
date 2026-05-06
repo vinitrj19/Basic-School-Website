@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Valley | High UI/UX School</title>
+    <title>Open Minds a Birla School | Patna</title>
     
     <!-- Using Inter font for a professional, sleek agency look -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -23,6 +23,8 @@
             --text-muted: rgba(225, 224, 204, 0.6);
             --accent: #ffffff;
             --card-bg: #111111;
+            --error-color: #ff4a4a;
+            --success-color: #4aff80;
         }
 
         body {
@@ -84,6 +86,7 @@
             padding: 0.75rem 2rem;
             border-radius: 0 0 1.5rem 1.5rem;
             gap: 2rem;
+            width: max-content;
         }
 
         nav a {
@@ -122,11 +125,12 @@
         }
 
         .hero-title {
-            font-size: clamp(4rem, 15vw, 15rem);
+            font-size: clamp(3.5rem, 12vw, 12rem);
             font-weight: 500;
             line-height: 0.85;
             letter-spacing: -0.05em;
             color: var(--text-main);
+            margin-bottom: 1rem;
         }
 
         .hero-title sup {
@@ -134,6 +138,23 @@
             vertical-align: top;
             position: relative;
             top: 0.5em;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
         }
 
         .hero-desc {
@@ -186,6 +207,60 @@
             transform: scale(1.1);
         }
 
+        /* === Welcome Modal (Glassmorphism) === */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(225, 224, 204, 0.15);
+            padding: 3rem;
+            border-radius: 1.5rem;
+            z-index: 1000;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            display: none;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal.show, .modal-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+        
+        .modal.show {
+            transform: translate(-50%, -50%);
+        }
+
+        .modal h3 {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .modal p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
         /* === Content Sections General === */
         section:not(.hero):not(#about) {
             padding: 8rem 4vw;
@@ -202,19 +277,17 @@
             padding-bottom: 1rem;
         }
 
-        /* === NEW: Enhanced About Section (Parallax + Glassmorphism) === */
+        /* === About Section (Parallax + Glassmorphism) === */
         #about {
             position: relative;
-            /* Cinematic architectural photo from Unsplash */
             background: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-            background-attachment: fixed; /* Creates the smooth parallax transition effect */
+            background-attachment: fixed; 
             padding: 12rem 4vw;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Gradient overlays to blend the image seamlessly into the black background */
         #about::before {
             content: '';
             position: absolute;
@@ -223,11 +296,10 @@
             z-index: 1;
         }
 
-        /* Frosted Glass Container */
         .about-glass-card {
             position: relative;
             z-index: 2;
-            background: rgba(10, 10, 10, 0.45);
+            background: rgba(10, 10, 10, 0.65);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(225, 224, 204, 0.1);
@@ -235,7 +307,6 @@
             padding: 4rem;
             max-width: 1000px;
             width: 100%;
-            /* Smooth reveal animation for the card itself */
             transform: translateY(60px);
             opacity: 0;
             transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
@@ -256,14 +327,30 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             line-height: 1.6;
-            color: rgba(225, 224, 204, 0.85); /* Slightly brighter text for the glass card */
+            color: rgba(225, 224, 204, 0.85); 
+            text-align: center;
         }
 
-        @media (min-width: 768px) {
-            .about-grid { grid-template-columns: 1fr 1fr; }
-            .about-glass-card { padding: 5rem; }
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 3rem;
+        }
+
+        .pillar h4 {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .pillar p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
 
         /* === Courses Section === */
@@ -286,6 +373,18 @@
             background-color: #1a1a1a;
         }
 
+        .course-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            border: 1px solid var(--text-muted);
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            margin-bottom: 1.5rem;
+        }
+
         .course-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
@@ -295,6 +394,7 @@
         .course-card p {
             color: var(--text-muted);
             line-height: 1.5;
+            font-size: 0.95rem;
         }
 
         /* === Contact Section === */
@@ -308,17 +408,48 @@
             .contact-wrapper { grid-template-columns: 1fr 1fr; }
         }
 
+        .contact-info-list {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .info-item strong {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-main);
+        }
+
+        .info-item span {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
         form {
             display: flex;
             flex-direction: column;
             gap: 2rem;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .input-group {
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
-        input, textarea {
+        input, textarea, select {
             width: 100%;
             background: transparent;
             border: none;
@@ -328,15 +459,47 @@
             font-size: 1.1rem;
             outline: none;
             transition: border-color 0.3s ease;
+            appearance: none;
         }
 
-        input:focus, textarea:focus {
+        select option {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+        }
+
+        input:focus, textarea:focus, select:focus {
             border-bottom-color: var(--text-main);
         }
 
         textarea {
             resize: vertical;
             min-height: 100px;
+        }
+
+        /* Form validation styles */
+        .error-text {
+            color: var(--error-color);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .input-error {
+            border-bottom-color: var(--error-color) !important;
+        }
+
+        .success-msg {
+            display: none;
+            background: rgba(74, 255, 128, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 1rem;
         }
 
         /* Footer */
@@ -351,6 +514,19 @@
 </head>
 <body>
 
+    <!-- Welcome Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeWelcomeMessage()"></div>
+    <div class="modal" id="welcomeModal">
+        <h3>Welcome</h3>
+        <p>Welcome to Open Minds a Birla School, Patna. We nurture young hearts with holistic education, blending academic excellence with moral integrity.</p>
+        <button class="action-btn" onclick="closeWelcomeMessage()" style="margin: 0 auto;">
+            Enter the Collective
+            <span class="icon-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+        </button>
+    </div>
+
     <!-- Hero Section -->
     <section class="hero" id="home">
         <video autoPlay loop muted playsInline class="hero-video" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4"></video>
@@ -359,14 +535,24 @@
         <nav>
             <a href="#home">Home</a>
             <a href="#about">About</a>
-            <a href="#courses">Courses</a>
+            <a href="#courses">Programs</a>
             <a href="#contact">Contact</a>
         </nav>
 
         <div class="hero-content">
-            <h1 class="hero-title animate-on-scroll">
-                <span class="stagger-text">Green Valley</span><sup>*</sup>
-            </h1>
+            <div class="animate-on-scroll">
+                <h1 class="hero-title">
+                    <span class="stagger-text">Open Minds</span><sup>*</sup>
+                </h1>
+                <h2 class="hero-subtitle pull-up-word" style="transition-delay: 0.2s;">A Birla School | Patna, Bihar</h2>
+                <div class="hero-stats pull-up-word" style="transition-delay: 0.3s;">
+                    <span>1200+ Students</span>
+                    <span>•</span>
+                    <span>80+ Faculty</span>
+                    <span>•</span>
+                    <span>CBSE Affiliated</span>
+                </div>
+            </div>
             
             <div class="hero-desc animate-on-scroll">
                 <p class="pull-up-word" style="transition-delay: 0.4s;">
@@ -374,7 +560,7 @@
                 </p>
                 <div class="pull-up-word" style="transition-delay: 0.5s;">
                     <button class="action-btn" onclick="showWelcomeMessage()">
-                        Join the legacy
+                        Welcome Message
                         <span class="icon-circle">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </span>
@@ -384,33 +570,77 @@
         </div>
     </section>
 
-    <!-- NEW: Enhanced About Section -->
+    <!-- About Section -->
     <section id="about" class="animate-on-scroll">
         <div class="about-glass-card">
-            <h2 class="section-header stagger-text">Our Story</h2>
+            <h2 class="section-header stagger-text">Our Legacy</h2>
             <div class="about-grid">
-                <p class="pull-up-word" style="transition-delay: 0.3s;">Founded with the vision to disrupt traditional education, Green Valley is more than a school. It is an incubator for the next generation of visual artists, scientists, and storytellers.</p>
-                <p class="pull-up-word" style="transition-delay: 0.4s;">We provide a cinematic, immersive environment where students are encouraged to explore their passions, think critically, and become responsible global leaders.</p>
+                <p class="pull-up-word" style="transition-delay: 0.3s;">
+                    Established to disrupt traditional education, Open Minds a Birla School in Patna is more than just an institution. It is an incubator for the next generation of innovators, leaders, and storytellers.
+                </p>
+                <p class="pull-up-word" style="transition-delay: 0.4s;">
+                    We provide a cinematic, immersive environment where students explore their passions, think critically, and prepare for a technology-driven world under the prestigious Birla educational framework.
+                </p>
+            </div>
+            
+            <div class="pillars pull-up-word" style="transition-delay: 0.5s;">
+                <div class="pillar">
+                    <h4>Our Vision</h4>
+                    <p>To be an institution of excellence dedicated to value-based, wholesome education.</p>
+                </div>
+                <div class="pillar">
+                    <h4>Our Mission</h4>
+                    <p>To nurture young minds, blending academic rigor with moral and spiritual growth.</p>
+                </div>
+                <div class="pillar">
+                    <h4>Our Motto</h4>
+                    <p>"Let Your Light Shine"</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Courses Section -->
     <section id="courses" class="animate-on-scroll">
-        <h2 class="section-header stagger-text">Programs</h2>
+        <h2 class="section-header stagger-text">Academic Programs</h2>
         <div class="courses-grid">
+            
+            <div class="course-card pull-up-word" style="transition-delay: 0.1s;">
+                <span class="course-tag">Senior Secondary</span>
+                <h3>Science Stream</h3>
+                <p>Physics, Chemistry, Biology & Mathematics — preparing students for medical, engineering and research careers with rigorous lab-based learning.</p>
+            </div>
+            
             <div class="course-card pull-up-word" style="transition-delay: 0.2s;">
-                <h3>Digital Arts & Cinema</h3>
-                <p>Master the art of storytelling through lenses. Dive deep into cinematography, editing, and visual effects.</p>
+                <span class="course-tag">Senior Secondary</span>
+                <h3>Commerce Stream</h3>
+                <p>Accountancy, Business Studies, Economics and Mathematics — building future entrepreneurs, chartered accountants and financial analysts.</p>
             </div>
+            
             <div class="course-card pull-up-word" style="transition-delay: 0.3s;">
-                <h3>Tech Innovation Lab</h3>
-                <p>Explore cutting-edge computer science, artificial intelligence, and software engineering in our state-of-the-art labs.</p>
+                <span class="course-tag">Senior Secondary</span>
+                <h3>Humanities Stream</h3>
+                <p>History, Political Science, Geography, Psychology and Sociology — nurturing critical thinkers, writers, civil servants and social leaders.</p>
             </div>
+
             <div class="course-card pull-up-word" style="transition-delay: 0.4s;">
-                <h3>Global Business</h3>
-                <p>Learn modern entrepreneurship, global market economics, and startup leadership from industry experts.</p>
+                <span class="course-tag">Secondary</span>
+                <h3>Secondary Education</h3>
+                <p>Core curriculum covering Language, Mathematics, Science and Social Science for Classes VI–X, aligned with CBSE guidelines for holistic development.</p>
             </div>
+
+            <div class="course-card pull-up-word" style="transition-delay: 0.5s;">
+                <span class="course-tag">Co-Curricular</span>
+                <h3>Arts & Activities</h3>
+                <p>Music, Dance, Fine Arts, Drama and Sports — cultivating creativity, physical fitness and teamwork to round every student's education.</p>
+            </div>
+
+            <div class="course-card pull-up-word" style="transition-delay: 0.6s;">
+                <span class="course-tag">Technology</span>
+                <h3>Computer Science</h3>
+                <p>Programming, IT Applications and Digital Literacy — equipping students with 21st-century skills for a technology-driven future world.</p>
+            </div>
+
         </div>
     </section>
 
@@ -418,33 +648,78 @@
     <section id="contact" class="animate-on-scroll">
         <h2 class="section-header stagger-text">Inquiries</h2>
         <div class="contact-wrapper">
-            <div class="contact-info">
-                <p class="pull-up-word" style="transition-delay: 0.2s; font-size: 1.5rem; margin-bottom: 2rem;">Ready to unlock your potential?<br>Reach out to our admissions collective.</p>
+            
+            <div class="contact-info pull-up-word" style="transition-delay: 0.2s;">
+                <p style="font-size: 1.5rem; margin-bottom: 1rem;">Ready to unlock your potential?</p>
+                <p style="color: var(--text-muted);">Reach out to our admissions collective. We are here to guide you through the process.</p>
+                
+                <div class="contact-info-list">
+                    <div class="info-item">
+                        <strong>Address</strong>
+                        <span>Open Minds a Birla School, Patna, Bihar, India</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Phone</strong>
+                        <span>+91 98765 43210</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Email</strong>
+                        <span>admissions@openmindspatna.edu.in</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Office Hours</strong>
+                        <span>Monday – Saturday: 8:00 AM – 3:00 PM</span>
+                    </div>
+                </div>
             </div>
             
-            <form id="contactForm" onsubmit="validateForm(event)" class="pull-up-word" style="transition-delay: 0.4s;">
-                <div class="input-group">
-                    <input type="text" id="name" placeholder="Your Name" autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <input type="email" id="email" placeholder="Your Email Address" autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <textarea id="message" placeholder="Tell us your story..."></textarea>
-                </div>
-                <button type="submit" class="action-btn" style="background-color: transparent; border: 1px solid var(--text-main); color: var(--text-main);">
-                    Send Transmission
-                    <span class="icon-circle" style="background-color: var(--text-main); color: black;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                    </span>
-                </button>
-            </form>
+            <div class="pull-up-word" style="transition-delay: 0.4s;">
+                <form id="contactForm" onsubmit="validateForm(event)" novalidate>
+                    
+                    <div class="success-msg" id="successMsg">
+                        Transmission received successfully. Our collective will be in touch.
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" id="fname" placeholder="Full Name" autocomplete="off">
+                        <span class="error-text" id="fnameErr">Please enter your full name.</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="email" id="email" placeholder="Email Address" autocomplete="off">
+                        <span class="error-text" id="emailErr">Please enter a valid email address.</span>
+                    </div>
+
+                    <div class="input-group">
+                        <select id="subject">
+                            <option value="" disabled selected>— Select a Subject —</option>
+                            <option value="admission">Admission Enquiry</option>
+                            <option value="academics">Academic Programs</option>
+                            <option value="fees">Fee Structure</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span class="error-text" id="subjectErr">Please select a subject.</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <textarea id="message" placeholder="Tell us your story..."></textarea>
+                        <span class="error-text" id="messageErr">Please write your message.</span>
+                    </div>
+                    
+                    <button type="submit" class="action-btn" style="background-color: transparent; border: 1px solid var(--text-main); color: var(--text-main);">
+                        Send Transmission
+                        <span class="icon-circle" style="background-color: var(--text-main); color: black;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </span>
+                    </button>
+                </form>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Green Valley High School Collective. All rights reserved.</p>
+        <p>&copy; 2026 Open Minds a Birla School, Patna, Bihar. All rights reserved.</p>
     </footer>
 
     <!-- Internal JavaScript -->
@@ -472,12 +747,7 @@
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // For the about section specifically, trigger the card animation alongside child animations
-                    if(entry.target.id === 'about') {
-                        entry.target.classList.add('in-view');
-                    } else {
-                        entry.target.classList.add('in-view');
-                    }
+                    entry.target.classList.add('in-view');
                     observer.unobserve(entry.target);
                 }
             });
@@ -491,32 +761,66 @@
             document.querySelector('.hero .hero-content').classList.add('in-view');
         }, 100);
 
-        // --- 2. Interactive Feature ---
+        // --- 2. Interactive Welcome Modal ---
         function showWelcomeMessage() {
-            alert("✨ Welcome to the Green Valley Collective. Your journey to mastery begins here. ✨");
+            document.getElementById('modalOverlay').classList.add('show');
+            document.getElementById('welcomeModal').classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
         }
 
-        // --- 3. Form Validation ---
+        function closeWelcomeMessage() {
+            document.getElementById('modalOverlay').classList.remove('show');
+            document.getElementById('welcomeModal').classList.remove('show');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // --- 3. Advanced Form Validation ---
         function validateForm(event) {
             event.preventDefault();
 
-            const name = document.getElementById('name').value.trim();
+            // Get values
+            const fname = document.getElementById('fname').value.trim();
             const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value.trim();
 
-            if (!name || !email || !message) {
-                alert("Please fill in all fields before sending your transmission.");
-                return;
-            }
-
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert("Please provide a valid email address.");
-                return;
+            let hasError = false;
+
+            // Helper function
+            function setError(fieldId, errId, isInvalid) {
+                const field = document.getElementById(fieldId);
+                const err = document.getElementById(errId);
+                if (isInvalid) {
+                    field.classList.add('input-error');
+                    err.style.display = 'block';
+                    setTimeout(() => err.style.opacity = '1', 10);
+                    hasError = true;
+                } else {
+                    field.classList.remove('input-error');
+                    err.style.opacity = '0';
+                    setTimeout(() => err.style.display = 'none', 300);
+                }
             }
 
-            alert(`Transmission received. Thank you, ${name}. Our collective will be in touch shortly.`);
-            document.getElementById('contactForm').reset();
+            // Validations
+            setError('fname', 'fnameErr', fname === '');
+            setError('email', 'emailErr', email === '' || !emailRegex.test(email));
+            setError('subject', 'subjectErr', subject === '');
+            setError('message', 'messageErr', message === '');
+
+            // Success state
+            if (!hasError) {
+                const successMsg = document.getElementById('successMsg');
+                successMsg.style.display = 'block';
+                
+                document.getElementById('contactForm').reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 5000);
+            }
         }
     </script>
 </body>
